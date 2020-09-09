@@ -25,7 +25,11 @@ class AlienInvasion:
         while True:
             self._check_events()
             self.ship.update()
-            self.bullets.update()
+            self._update_bullets()
+           
+
+            
+            
             self._update_screen()
            
     def _check_events(self):
@@ -60,10 +64,20 @@ class AlienInvasion:
                     self.ship.moving_left = False
     
     def _fire_bullet(self):
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)
+        if len(self.bullets) <self.settings.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
 
-                
+    def _update_bullets(self):
+        #Update bullet 
+        self.bullets.update()
+
+        #Remove the bullets that have dissapiared from the screen
+        for bullet in self.bullets.copy():
+                if bullet.rect.bottom <= 0:
+                    self.bullets.remove(bullet)
+
+
 
     def _update_screen(self):
         """on every change update the screen"""
